@@ -12,15 +12,37 @@ namespace calculator
 {
     public partial class frmMain : Form
     {
-        private char[,] buttons =
+        private Label resultLabel;
+        static Color OPERATION_BG = Color.LightGray;
+        static Color NUMBER_BG = Color.WhiteSmoke;
+        static Color EQUAL_BG = Color.LightSeaGreen;
+
+        private BtnStruct[,] buttons =
         {
-            {'%', '\u0152', 'C', '\u232B' },
-            {'\u215F', '\u00B2', '\u221A', '\u00F7' },
-            {'7', '8', '9', 'x' },
-            {'4', '5', '6', '-' },
-            {'1', '2', '3', '+' },
-            {'\u00B1', '0', ',', '=' }
-        }; 
+            {new BtnStruct('%', OPERATION_BG), new BtnStruct('\u0152', OPERATION_BG), new BtnStruct('C', OPERATION_BG), new BtnStruct('\u232B', OPERATION_BG) },
+            {new BtnStruct('\u215F', OPERATION_BG), new BtnStruct('\u00B2', OPERATION_BG), new BtnStruct('\u221A', OPERATION_BG), new BtnStruct('\u00F7', OPERATION_BG) },
+            {new BtnStruct('7', NUMBER_BG), new BtnStruct('8', NUMBER_BG), new BtnStruct('9', NUMBER_BG), new BtnStruct('x', OPERATION_BG) },
+            {new BtnStruct('4', NUMBER_BG), new BtnStruct('5', NUMBER_BG), new BtnStruct('6', NUMBER_BG), new BtnStruct('-', OPERATION_BG) },
+            {new BtnStruct('1', NUMBER_BG), new BtnStruct('2', NUMBER_BG), new BtnStruct('3', NUMBER_BG), new BtnStruct('+', OPERATION_BG) },
+            {new BtnStruct('\u00B1', NUMBER_BG), new BtnStruct('0', NUMBER_BG), new BtnStruct(',', NUMBER_BG), new BtnStruct('=', EQUAL_BG) }
+        };
+
+        public struct BtnStruct
+        {
+            public char Content;
+            public Color BgColor;
+
+            public BtnStruct(char content, Color bgColor)
+            {
+                this.Content = content;
+                this.BgColor = bgColor;
+            }
+            
+            public override string ToString()
+            {
+                return base.ToString();
+            }
+        }
 
         public frmMain()
         {
@@ -29,7 +51,21 @@ namespace calculator
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            MakeResultLabels();
             MakeButtons();
+        }
+
+        private void MakeResultLabels()
+        {
+            resultLabel = new Label()
+            {
+                Font = new Font("Segoe UI", 22, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleRight,
+                AutoSize = false,
+                Location = new Point(0, 0),
+                Size = new Size(this.Width, 100)
+            };
+            Controls.Add(resultLabel);
         }
 
         private void MakeButtons()
@@ -45,13 +81,23 @@ namespace calculator
                     btn.Width = btnWidth;
                     btn.Height = btnHeight;
                     btn.Left = posX;
+                    btn.Top = posY;
                     btn.Font = new Font("Segoe UI", 16);
                     btn.Text = buttons[i,j].ToString();
+                    btn.BackColor = buttons[i, j].BgColor;
+                    btn.Click += Btn_Click1;
                     Controls.Add(btn);
                     posX += btnWidth;
                 }
-                posY = posY + btnHeight;
+                posY += btnHeight;
             }
+            
         }
+
+        private void Btn_Click1(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
