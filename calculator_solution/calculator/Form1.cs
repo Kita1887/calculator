@@ -236,7 +236,8 @@ namespace calculator
                         result = operand1 * operand2;
                         break;
                     case '\u00F7':
-                        result = operand1 / operand2;
+                        if(operand2 != 0)
+                            result = operand1 / operand2;
                         break;
                 }
             }
