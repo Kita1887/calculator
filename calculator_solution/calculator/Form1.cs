@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,8 +89,23 @@ namespace calculator
 
         private void ResultLabel_TextChanged(object sender, EventArgs e)
         {
-            if(resultLabel.Text.Length > 16)
-                resultLabel.Text = resultLabel.Text.Substring(0, 16);
+            if (resultLabel.Text.Length > 0)
+            {
+                decimal num = decimal.Parse(resultLabel.Text);
+                NumberFormatInfo nfi = new CultureInfo("it-IT", false).NumberFormat;
+                int decimalSeparatorPosition = resultLabel.Text.IndexOf(',');
+                if (decimalSeparatorPosition == -1)
+                    nfi.NumberDecimalDigits = 0;
+                else
+                    nfi.NumberDecimalDigits = resultLabel.Text.Length - decimalSeparatorPosition - 1;
+                string stOut = num.ToString("N", nfi);
+                if (decimalSeparatorPosition == resultLabel.Text.Length - 1)
+                    stOut += ",";
+                resultLabel.Text = stOut;
+            }
+
+            if (resultLabel.Text.Length > 16)
+                resultLabel.Text = resultLabel.Text.Substring(0, 17);
 
             if (resultLabel.Text.Length > 11)
             {
